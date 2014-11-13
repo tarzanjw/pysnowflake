@@ -3,23 +3,22 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+.. _index:
+
+==================================================
 Welcome to Python Local SnowFlake's documentation!
 ==================================================
 
-Contents:
+A library that provides snowflake features to local thread. You will not need to
+setup any server to serve this service.
 
-.. toctree::
-   :maxdepth: 2
+* :ref:`_how-it-build-unique-id`
+* :ref:`_how-to-use`
 
 
+.. _how-it-build-unique-id:
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
+----------------------------
 How does it build Unique ID?
 ----------------------------
 
@@ -37,18 +36,20 @@ The main idea is, each ID is built from 3 parts:
   3. Auto-incrementing sequence part: 8 bit (so we can generates 256 IDs per shard per millisecond)
 
 How does it detect logical shard?
----------------------------------
+=================================
 
 The idea is: each logical shard is a combination of the server/node and the thread where the code run in.
 
-### Server/Node ID
+Server/Node ID
+--------------
 
 This is the number to identify the server/node, this will get from environment
 variable named: **PYLOCALFLAKE_NODE_ID**
 
 It will take 7 bits, gives us capacity to handle 128 nodes.
 
-### Thread ID
+Thread ID
+---------
 
 This will identify each thread/instance of the ID generator pernode. This will be
 an anto-increment number that be shared all over the server/node.
@@ -65,3 +66,17 @@ take a comfortable thread-id, save its information (real process-id, real thread
 to claim its thread-id, then release the lock.
 
 Whenever a localflake instance is deleted or the process exit, it unclaims the thread-id.
+
+.. _how-to-use:
+
+-----------
+How to use?
+-----------
+
+    .. code-block:: python
+
+        # just import and use it
+        from localflake import get_guid
+
+        >>> print(get_guid())
+        12342432143
