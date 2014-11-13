@@ -1,4 +1,6 @@
-py-local-flake
-==============
+Python Local SnowFlake
+======================
 
-A local version of snowflake by Python, it will run locally and use machine ID + process/thread ID instead of worker_id
+A library that provides snowflake features to local thread. You will not need to
+setup any server to serve this service.
+
