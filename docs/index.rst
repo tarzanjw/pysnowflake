@@ -8,6 +8,7 @@ Welcome to Python SnowFlake's documentation!
 ============================================
 
 A library that provides snowflake features to python, including Client & Server.
+
 This is extend of https://github.com/koblas/pysnowflake with Client adding.
 
 .. _installation:
@@ -16,7 +17,9 @@ This is extend of https://github.com/koblas/pysnowflake with Client adding.
 Installation
 ------------
 
-    pip install pysnowflake
+    .. code-block:: bash
+
+        pip install pysnowflake
 
 .. _run_server:
 
@@ -24,13 +27,13 @@ Installation
 Run server
 ----------
 
-    .. code-block::
+    .. code-block:: bash
 
         snowflake_start_server [--dc=DC_ID] [--worker=WORKER_ID] [--host=ADDRESS] [--port=PORT]
 
 With configuration default value:
 
-    1. dc (int, 4 bit): be searched in environment `PSF_DC` first, if not found, get the 0 value.
+    1. dc (int, 2 bit): be searched in environment `PSF_DC` first, if not found, get the 0 value.
     2. worker (int, 8 bit): be searched in environment `PSF_WORKER` first, if not found, get the 0 value.
     3. address (domain, inet): default is `localhost`.
     4. port (int): default is `8910`.
@@ -43,8 +46,13 @@ APIs
 
 All APIs through http `GET` method.
 
-1. /                   -- get/generate the ID
-2. /stats              -- get the information and statistic for this worker
++-------------+---------------------------------------------------+
+| API Path    | Description                                       |
++=============+===================================================+
+|  **/**      | Get/Generate the ID                               |
++-------------+---------------------------------------------------+
+|  **/stats** | Get the information and statistic for this worker |
++-------------+---------------------------------------------------+
 
 .. _how-to-use:
 
