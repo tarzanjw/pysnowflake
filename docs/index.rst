@@ -71,7 +71,7 @@ How to use?
         >>> snowflake.client.get_guid()
         3631957913783762945
         # See the stats if you want
-        >>> snowflake.client.stats()
+        >>> snowflake.client.get_stats()
         {
             'dc': 0,
             'worker': 0,

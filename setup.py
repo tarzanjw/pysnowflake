@@ -1,3 +1,4 @@
+#coding=utf-8
 import os
 
 from setuptools import setup
@@ -23,9 +24,9 @@ setup(name='pysnowflake',
         "Topic :: Utilities",
         "Topic :: Software Development :: Libraries",
         ],
-      author='',
-      author_email='',
-      url='',
+      author='Học .T Đỗ',
+      author_email='hoc3010@gmail.com',
+      url='https://github.com/tarzanjw/pysnowflake',
       keywords='snowflake server client',
       packages=['snowflake', ],
       include_package_data=True,
