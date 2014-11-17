@@ -3,69 +3,46 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-.. _index:
+============================================
+Welcome to Python SnowFlake's documentation!
+============================================
 
-==================================================
-Welcome to Python Local SnowFlake's documentation!
-==================================================
+A library that provides snowflake features to python, including Client & Server.
+This is extend of https://github.com/koblas/pysnowflake with Client adding.
 
-A library that provides snowflake features to local thread. You will not need to
-setup any server to serve this service.
+.. _installation:
 
-* :ref:`_how-it-build-unique-id`
-* :ref:`_how-to-use`
+------------
+Installation
+------------
 
+    pip install pysnowflake
 
-.. _how-it-build-unique-id:
+.. _run_server:
 
-----------------------------
-How does it build Unique ID?
-----------------------------
+----------
+Run server
+----------
 
-I have referenced the algorithm from:
+    snowflake_start_server [--dc=DC_ID] [--worker=WORKER_ID] [--host=ADDRESS] [--port=PORT]
 
-  1. `Twitter’s Snowflake <http://github.com/twitter/snowflake/>`_
-  2. `Facebook Instagram <http://instagram-engineering.tumblr.com/post/10853187575/sharding-ids-at-instagram>`_
+With configuration default value:
 
-to build this library.
+    1. dc (int, 4 bit): be searched in environment `PSF_DC` first, if not found, get the 0 value.
+    2. worker (int, 8 bit): be searched in environment `PSF_WORKER` first, if not found, get the 0 value.
+    3. address (domain, inet): default is `localhost`.
+    4. port (int): default is `8910`.
 
-The main idea is, each ID is built from 3 parts:
+.. _api:
 
-  1. The timestamp part: 41 bit (gives us 41 years of IDs with a custom epoch)
-  2. The logical shard part: 15 bit (gives us 128*256 logical shards)
-  3. Auto-incrementing sequence part: 8 bit (so we can generates 256 IDs per shard per millisecond)
+----
+APIs
+----
 
-How does it detect logical shard?
-=================================
+All APIs through http `GET` method.
 
-The idea is: each logical shard is a combination of the server/node and the thread where the code run in.
-
-Server/Node ID
---------------
-
-This is the number to identify the server/node, this will get from environment
-variable named: **PYLOCALFLAKE_NODE_ID**
-
-It will take 7 bits, gives us capacity to handle 128 nodes.
-
-Thread ID
----------
-
-This will identify each thread/instance of the ID generator pernode. This will be
-an anto-increment number that be shared all over the server/node.
-
-It will takes 8 bits, give uses capacity to handle 256 threads per node.
-
-I used a file to share this: /tmp/pylocalflake.tid.
-
-This file is a simple database (CSV formatted). Each row has 3 fields in order:
-*thread_id, real_process_id, real_thread_id*.
-
-Whenever a localflake instance is created, it will check this file with a lock,
-take a comfortable thread-id, save its information (real process-id, real thread-id)
-to claim its thread-id, then release the lock.
-
-Whenever a localflake instance is deleted or the process exit, it unclaims the thread-id.
+    /                   -- get/generate the ID
+    /stats              -- get the information and statistic for this worker
 
 .. _how-to-use:
 
@@ -76,7 +53,21 @@ How to use?
     .. code-block:: python
 
         # just import and use it
-        from localflake import get_guid
+        import snowflake.client
 
-        >>> print(get_guid())
-        12342432143
+        # One time only initialization
+        >>> snowflake.client.setup(host, port)
+        # Then get the ID whenever you need
+        >>> snowflake.client.get_guid()
+        `the generated GUID`
+        # See the stats if you want
+        >>> snowflake.client.stats()
+        {
+            'dc': 0,
+            'worker': 0,
+            'timestamp': 123456789, # current timestamp for this worker
+            'last_timestamp': 123456780, # the last timestamp that generated ID on
+            'sequence': 12, # the sequence number for last timestamp
+            'sequence_overload': 1, # the number of times that the sequence is overflow
+            'errors': 1, # the number of times that clock went backward
+        }
