@@ -24,7 +24,9 @@ Installation
 Run server
 ----------
 
-    snowflake_start_server [--dc=DC_ID] [--worker=WORKER_ID] [--host=ADDRESS] [--port=PORT]
+    .. code-block::
+
+        snowflake_start_server [--dc=DC_ID] [--worker=WORKER_ID] [--host=ADDRESS] [--port=PORT]
 
 With configuration default value:
 
@@ -41,8 +43,8 @@ APIs
 
 All APIs through http `GET` method.
 
-    /                   -- get/generate the ID
-    /stats              -- get the information and statistic for this worker
+1. /                   -- get/generate the ID
+2. /stats              -- get the information and statistic for this worker
 
 .. _how-to-use:
 
@@ -59,14 +61,14 @@ How to use?
         >>> snowflake.client.setup(host, port)
         # Then get the ID whenever you need
         >>> snowflake.client.get_guid()
-        `the generated GUID`
+        3631957913783762945
         # See the stats if you want
         >>> snowflake.client.stats()
         {
             'dc': 0,
             'worker': 0,
-            'timestamp': 123456789, # current timestamp for this worker
-            'last_timestamp': 123456780, # the last timestamp that generated ID on
+            'timestamp': 1416207853020, # current timestamp for this worker
+            'last_timestamp': 1416207845161, # the last timestamp that generated ID on
             'sequence': 12, # the sequence number for last timestamp
             'sequence_overload': 1, # the number of times that the sequence is overflow
             'errors': 1, # the number of times that clock went backward
