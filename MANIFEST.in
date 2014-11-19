@@ -1,1 +1,2 @@
-recursive-include snowflake *.py
+include *.ini *.rst *.txt
+recursive-include snowflake *.py *.ini
