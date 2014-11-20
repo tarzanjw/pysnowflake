@@ -1,8 +1,4 @@
 import json
-
-__author__ = 'tarzan'
-
-# tornado
 import tornado.httpserver
 import tornado.ioloop
 import tornado.web
@@ -57,7 +53,7 @@ class SnowflakeApplication(tornado.web.Application):
             'debug': options.debug,
         }
         self.id_generator = Generator(options.dc, options.worker)
-        super().__init__(handlers, **settings)
+        super(SnowflakeApplication, self).__init__(handlers, **settings)
 
 
 def main(): # pragma: no cover

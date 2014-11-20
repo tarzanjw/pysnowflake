@@ -14,7 +14,7 @@ requires = [
     ]
 
 setup(name='pysnowflake',
-      version='0.1.2',
+      version='0.1.3',
       description='Python Snowflake Kit',
       long_description=README,
       classifiers=[

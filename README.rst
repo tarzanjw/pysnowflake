@@ -10,3 +10,11 @@ This is extend of https://github.com/koblas/pysnowflake with Client adding.
 
 See `documentations <http://pysnowflake.readthedocs.org/en/latest/>`_
 
+----------
+Change log
+----------
+
+0.1.3
+*****
+
+* Fix syntax errors with python 2.7
