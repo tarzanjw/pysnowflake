@@ -1,9 +1,7 @@
-import os
-
 from setuptools import setup
 
-here = os.path.abspath(os.path.dirname(__file__))
-with open(os.path.join(here, "README.md")) as f:
+
+with open("README.md", "r") as f:
     README = f.read()
 
 requires = [
@@ -17,6 +15,7 @@ setup(
     version="0.1.3",
     description="Python Snowflake Kit",
     long_description=README,
+    long_description_content_type="text/markdown",
     classifiers=[
         "Programming Language :: Python",
         "Programming Language :: Python :: 2.7",
