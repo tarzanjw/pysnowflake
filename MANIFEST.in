@@ -1,2 +1,1 @@
-include *.ini *.rst *.txt
-recursive-include snowflake *.py *.ini
+include README.md requirements.txt LICENSE
