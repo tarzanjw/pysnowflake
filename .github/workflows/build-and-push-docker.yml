@@ -30,4 +30,4 @@ jobs:
           context: .
           platforms: linux/amd64, linux/amd64/v2, linux/amd64/v3, linux/arm64
           push: true
-          tags: ${{ env.prod.IMAGE }}:${{ github.sha }}, ${{ env.prod.IMAGE }}:latest
+          tags: ${{ vars.IMAGE }}:${{ github.sha }}, ${{ vars.IMAGE }}:latest
