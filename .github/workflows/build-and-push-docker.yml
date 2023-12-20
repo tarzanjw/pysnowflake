@@ -30,4 +30,4 @@ jobs:
           context: .
           platforms: linux/amd64, linux/amd64/v2, linux/amd64/v3, linux/arm64
           push: true
-          tags: moridisa/pysnowflake:${{ github.sha }}, moridisa/pysnowflake:latest
+          tags: ${{ image }}:${{ github.sha }}, ${{ image }}:latest
