@@ -7,8 +7,8 @@ import os
 from .generator import Generator
 
 
-_ENV_NAME_DC = 'PSF_DC'
-_ENV_NAME_WORKER = 'PSF_WORKER'
+_ENV_NAME_DC = "PSF_DC"
+_ENV_NAME_WORKER = "PSF_WORKER"
 
 try:
     _PSF_DC = int(os.environ[_ENV_NAME_DC])
@@ -21,10 +21,13 @@ except KeyError:
     _PSF_WORKER = 0
 
 define("debug", default=False, help="run in debug mode", type=bool)
-define("address", default='localhost', help="run on the given address", type=str)
+define("address", default="localhost", help="run on the given address", type=str)
 define("port", default=8910, help="run on the given port", type=int)
 define("dc", default=_PSF_DC, help="Datacenter Identifier", type=int)
 define("worker", default=_PSF_WORKER, help="Worker Identifier", type=int)
+define(
+    "num_processes", default=1, help="The specific number of sub-processes.", type=int
+)
 
 
 class IDHandler(tornado.web.RequestHandler):
@@ -32,7 +35,7 @@ class IDHandler(tornado.web.RequestHandler):
         generated_id = self.application.id_generator.get_next_id()
         self.set_header("Content-Type", "application/json")
         self.write(str(generated_id))
-        self.flush() # avoid ETag, etc generation
+        self.flush()  # avoid ETag, etc generation
 
 
 class StatsHandler(tornado.web.RequestHandler):
@@ -46,26 +49,25 @@ class StatsHandler(tornado.web.RequestHandler):
 class SnowflakeApplication(tornado.web.Application):
     def __init__(self, **settings):
         handlers = [
-            (r'/', IDHandler),
-            (r'/stats', StatsHandler),
+            (r"/", IDHandler),
+            (r"/stats", StatsHandler),
         ]
         settings = {
-            'debug': options.debug,
+            "debug": options.debug,
         }
         self.id_generator = Generator(options.dc, options.worker)
         super(SnowflakeApplication, self).__init__(handlers, **settings)
 
 
-def main(): # pragma: no cover
+def main():  # pragma: no cover
     import logging.config
     import logging
     import os.path
 
     # setup logging
-    logging.config.fileConfig(os.path.abspath(os.path.join(
-        os.path.dirname(__file__),
-        'logging.ini',
-    )))
+    logging.config.fileConfig(
+        os.path.abspath(os.path.join(os.path.dirname(__file__), "logging.ini",))
+    )
 
     tornado.options.parse_command_line()
 
@@ -74,10 +76,13 @@ def main(): # pragma: no cover
     print("Starting snowflake start at %s:%d" % (options.address, options.port))
     http_server.listen(options.port, options.address)
 
+    # the problem is that the bind() way which is suggested in the docs does not work on Linux or macOS; the listen way works on Linux, does not work on macOS.
+    # ref: https://github.com/tornadoweb/tornado/issues/2426
+    http_server.start(options.num_processes)
     try:
-        tornado.ioloop.IOLoop.instance().start()
+        tornado.ioloop.IOLoop.current().start()
     except Exception:
-        logging.exception('Snowflake server error')
+        logging.exception("Snowflake server error")
 
 
 if __name__ == "__main__":

@@ -29,7 +29,7 @@ Run server
 
     .. code-block:: bash
 
-        snowflake_start_server [--dc=DC_ID] [--worker=WORKER_ID] [--host=ADDRESS] [--port=PORT]
+        snowflake_start_server [--dc=DC_ID] [--worker=WORKER_ID] [--host=ADDRESS] [--port=PORT] [--num_processes=NUM_PROC]
 
 With configuration default value:
 
@@ -37,6 +37,7 @@ With configuration default value:
     2. worker (int, 8 bit): be searched in environment `PSF_WORKER` first, if not found, get the 0 value.
     3. address (domain, inet): default is `localhost`.
     4. port (int): default is `8910`.
+    5. num_processes (int): default is `1`.
 
 .. _api:
 
